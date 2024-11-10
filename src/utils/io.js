@@ -1,3 +1,14 @@
-export const readInput = async (message) => {};
+import { MissionUtils } from '@woowacourse/mission-utils';
 
-export const printOutput = (message) => {};
+const readInput = async (message) => {
+  return await MissionUtils.Console.readLineAsync(message);
+};
+
+const printOutput = (message) => {
+  MissionUtils.Console.print(message);
+};
+
+export default {
+  readInput,
+  printOutput,
+};
