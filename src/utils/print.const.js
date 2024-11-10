@@ -1,0 +1,1 @@
+const MESSAGE = Object.freeze({});
