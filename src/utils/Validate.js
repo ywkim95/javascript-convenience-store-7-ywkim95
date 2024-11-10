@@ -57,9 +57,37 @@ class Validate {
     }
   }
 
-  static validateProductQuantity(quantity) {
-    if (isNaN(quantity) || quantity < 1) {
+  static validateProductIncludes(products, productName) {
+    const productNames = products.map(product => product.name);
+    if (!productNames.includes(productName)) {
+      throw new Error(ERROR_MESSAGE.NO_PRODUCT);
+    }
+  }
+
+  static validateProductQuantity(products, productName, productQuantity) {
+    const filteredProducts = products.filter(product => product.name === productName).map(product => product.quantity);
+    const quantity = parseInt(productQuantity, 10);
+    const totalQuantity = filteredProducts.reduce((acc, cur) => acc + cur, 0);
+    this.validateProductQuantityType(productQuantity);
+    this.validateInvalidQuantity(quantity);
+    this.validateProductQuantityOverFlow(totalQuantity, quantity);
+  }
+
+  static validateInvalidQuantity(quantity) {
+    if(isNaN(quantity) || quantity <= 0) {
       throw new Error(ERROR_MESSAGE.INVALID_QUANTITY);
+    }
+  }
+
+  static validateProductQuantityType(productQuantity) {
+    if(isNaN(productQuantity)) {
+      throw new Error(ERROR_MESSAGE.PRODUCT.QUANTITY_TYPE);
+    }
+  }
+
+  static validateProductQuantityOverFlow(totalQuantity, quantity) {
+    if(totalQuantity < quantity) {
+      throw new Error(ERROR_MESSAGE.OVERFLOW_QUANTITY);
     }
   }
 }

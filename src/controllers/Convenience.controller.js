@@ -24,7 +24,7 @@ export default class ConvenienceController {
   async start() {
     while(true) {
       try {
-        const products = await this.inputProducts();
+        const products = await this.initProducts();
         await this.buyProducts(products);
       } catch (e) {
         io.printOutput(e.message);
@@ -41,19 +41,32 @@ export default class ConvenienceController {
     const file = readFile(fileName);
     const lines = file.split('\n');
     lines.shift();
-    lines.pop();
     return lines.map((line) => line.split(','));
   }
 
-  async inputProducts() {
+  async initProducts() {
     OutputView.printWelcome();
     this.#productController.printProductList();
+    return await this.readProducts();
+  }
 
-    const rawInput = await InputView.readProducts();
-    return rawInput.split(',').map((product) => {
-      const cleanProduct = product.replace(/[\[\]]/g, '');
-      return cleanProduct.split('-');
-    });
+  async readProducts() {
+    while(true) {
+      try {
+        const input =  await InputView.readProducts();
+        return input.split(',').map((product) => {
+          const cleanProduct = product.replace(/[\[\]]/g, '');
+          const splitProduct = cleanProduct.split('-');
+          const productName =  splitProduct[0].trim();
+          Validate.validateProductIncludes(this.#productController.products, productName);
+          const productQuantity = splitProduct[1].trim();
+          Validate.validateProductQuantity(this.#productController.products, productName, productQuantity);
+          return splitProduct;
+        });
+      } catch (e) {
+        io.printOutput(e.message);
+      }
+    }
   }
 
   async buyProducts(products) {
@@ -87,7 +100,7 @@ export default class ConvenienceController {
     Validate.validateQuantity(totalQuantity, quantity);
 
     const hasPromotion = this.checkPromotion(promotionProduct);
-    if (hasPromotion) {
+    if (!!hasPromotion) {
       const result = await this.applyPromotion(promotionProduct, quantity);
       quantity = result.quantity;
       promotionQuantity = result.promotionQuantity;

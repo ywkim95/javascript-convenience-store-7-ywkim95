@@ -6,7 +6,11 @@ const OutputView = {
     io.printOutput(MESSAGE.WELCOME);
   },
   printProduct (name, price, quantity, promotion) {
-    io.printOutput(`- ${name} ${price} ${quantity}개 ${promotion}`);
+    let quantityText = `${quantity}개`;
+    if(quantity === 0) {
+      quantityText = '재고 없음';
+    }
+    io.printOutput(`- ${name} ${price}원 ${quantityText} ${promotion}`);
   },
   printReceiptTitle() {
     io.printOutput(MESSAGE.RECEIPT.TITLE);
@@ -19,8 +23,8 @@ const OutputView = {
     io.printOutput(MESSAGE.RECEIPT.PROMOTION);
   },
   printPromotionProduct(receipt) {
-    if(receipt.quantity > 0) {
-      io.printOutput(MESSAGE.RECEIPT.PROMOTION_PRODUCT(receipt.name, receipt.quantity));
+    if(receipt.promotionQuantity > 0) {
+      io.printOutput(MESSAGE.RECEIPT.PROMOTION_PRODUCT(receipt.name, receipt.promotionQuantity));
     }
   },
   printSubNonPromotion(name) {

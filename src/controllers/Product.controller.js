@@ -8,6 +8,10 @@ export default class ProductController {
     this.#products = rawProducts.map((product) => new Product(...product));
   }
 
+  get products() {
+    return this.#products;
+  }
+
   printProductList() {
     for (const product of this.#products) {
       product.printProduct();
