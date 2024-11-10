@@ -28,9 +28,10 @@ export default class ProductController {
 
   updateFile() {
     const header = ['name','price','quantity','promotion'].join(',');
-    const body = this.#products.map((product) =>
-      [product.name, product.price, product.quantity, product.promotion].join(',')
-    );
+    const body = this.#products.map((product) =>{
+      const promotion = product.promotion === null ? 'null' : product.promotion;
+      return [product.name, product.price, product.quantity, promotion].join(',');
+    });
     const file = [header, ...body].join('\n');
     writeFile(productFileName, file);
   }

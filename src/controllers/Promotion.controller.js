@@ -11,11 +11,8 @@ export default class PromotionController {
   }
 
   findPromotion(promotionName) {
-    const promotion = this.#promotions.find(
+    return this.#promotions.find(
       (promotion) => promotion.name === promotionName
     );
-    Validate.validatePromotion(promotion);
-
-    return promotion;
   }
 }

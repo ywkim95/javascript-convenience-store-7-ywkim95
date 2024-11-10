@@ -22,12 +22,6 @@ class Validate {
     }
   }
 
-  static validatePromotion(promotion) {
-    if (!promotion) {
-      throw new Error(ERROR_MESSAGE.PROMOTION_NOT_FOUND);
-    }
-  }
-
   static validateProductInput(input) {
     if (!input || input.trim() === '') {
       throw new Error(ERROR_MESSAGE.NO_INPUT);

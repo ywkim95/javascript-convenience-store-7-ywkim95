@@ -228,7 +228,7 @@ export default class ConvenienceController {
   }
 
   checkPromotion(promotionProduct) {
-    if (promotionProduct) {
+    if (promotionProduct && promotionProduct.promotion) {
       const promotion = this.#promotionController.findPromotion(
         promotionProduct.promotion
       );
