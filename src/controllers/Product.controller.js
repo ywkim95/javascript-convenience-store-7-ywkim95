@@ -6,6 +6,7 @@ export default class ProductController {
 
   constructor(rawProducts = []) {
     this.#products = rawProducts.map((product) => new Product(...product));
+    this.addNonPromotionProduct();
   }
 
   get products() {
@@ -38,5 +39,20 @@ export default class ProductController {
     });
     const file = [header, ...body].join('\n');
     writeFile(productFileName, file);
+  }
+
+  addNonPromotionProduct() {
+    let products = [];
+    for(const product of this.#products) {
+      if(product.promotion === null) {
+        continue;
+      }
+      const promotionProduct = this.findPromotionProduct(product.name);
+      const nonPromotionProduct = this.findNonPromotionProduct(product.name);
+      if(nonPromotionProduct === undefined && promotionProduct !== undefined) {
+        products.push(new Product(product.name, product.price, 0, null));
+      }
+    }
+    this.#products.push(...products);
   }
 }

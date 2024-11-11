@@ -6,11 +6,7 @@ const OutputView = {
     io.printOutput(MESSAGE.WELCOME);
   },
   printProduct (name, price, quantity, promotion) {
-    let quantityText = `${quantity}개`;
-    if(quantity === 0) {
-      quantityText = '재고 없음';
-    }
-    io.printOutput(`- ${name} ${price}원 ${quantityText} ${promotion}`);
+    io.printOutput(`- ${name} ${price}원 ${quantity} ${promotion}`);
   },
   printReceiptTitle() {
     io.printOutput(MESSAGE.RECEIPT.TITLE);

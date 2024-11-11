@@ -1,7 +1,6 @@
 import App from '../src/App.js';
 import { MissionUtils } from '@woowacourse/mission-utils';
 import { EOL as LINE_SEPARATOR } from 'os';
-import ERROR_MESSAGE from '../src/utils/error-message.js';
 
 const mockQuestions = (inputs) => {
   const messages = [];
@@ -50,30 +49,30 @@ const expectLogContainsWithoutSpacesAndEquals = (received, expects) => {
 };
 
 const runExceptions = async ({
-                                 inputs = [],
-                                 inputsToTerminate = [],
-                                 expectedErrorMessage = '',
-                               }) => {
-    // given
-    const logSpy = getLogSpy();
-    mockQuestions([...inputs, ...inputsToTerminate]);
+                               inputs = [],
+                               inputsToTerminate = [],
+                               expectedErrorMessage = '',
+                             }) => {
+  // given
+  const logSpy = getLogSpy();
+  mockQuestions([...inputs, ...inputsToTerminate]);
 
-    // when
-    const app = new App();
-    await app.run();
+  // when
+  const app = new App();
+  await app.run();
 
-    // then
-    expect(logSpy).toHaveBeenCalledWith(
+  // then
+  expect(logSpy).toHaveBeenCalledWith(
     expect.stringContaining(expectedErrorMessage)
   );
 };
 
 const run = async ({
-  inputs = [],
-  inputsToTerminate = [],
-  expected = [],
-  expectedIgnoringWhiteSpaces = [],
-}) => {
+                     inputs = [],
+                     inputsToTerminate = [],
+                     expected = [],
+                     expectedIgnoringWhiteSpaces = [],
+                   }) => {
   // given
   const logSpy = getLogSpy();
   mockQuestions([...inputs, ...inputsToTerminate]);
@@ -151,7 +150,8 @@ describe('편의점', () => {
     await runExceptions({
       inputs: ['[컵라면-12]', 'N', 'N'],
       inputsToTerminate: INPUTS_TO_TERMINATE,
-      expectedErrorMessage: ERROR_MESSAGE.OVERFLOW_QUANTITY,
+      expectedErrorMessage:
+        '[ERROR] 재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요.',
     });
   });
 });

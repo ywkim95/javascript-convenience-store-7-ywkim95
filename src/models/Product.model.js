@@ -19,6 +19,8 @@ export default class Product {
     let quantity = this.#quantity;
     if (quantity === 0) {
       quantity = '재고 없음';
+    } else {
+      quantity = `${this.#quantity}개`;
     }
     let promotion = '';
     if (this.#promotion) {
